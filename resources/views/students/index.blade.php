@@ -5,7 +5,7 @@
 </x-slot:header>
 
 <div class="mb-6">
-    <a href="/student/create"
+    <a href="{{ route('student.create') }}"
        class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
         + New Student
     </a>
@@ -17,6 +17,7 @@
 
 <div class="bg-white shadow-lg rounded-xl p-5 hover:shadow-xl transition">
 
+    {{-- Profile --}}
     <div class="flex items-center gap-4 mb-4">
 
         @if($student->photo)
@@ -32,11 +33,14 @@
             <h2 class="text-lg font-semibold text-gray-800">
                 {{ $student->name }}
             </h2>
-            <p class="text-sm text-gray-500">{{ $student->gender }}</p>
+            <p class="text-sm text-gray-500">
+                {{ $student->gender }}
+            </p>
         </div>
 
     </div>
 
+    {{-- Student Info --}}
     <div class="text-sm text-gray-600 space-y-1">
         <p><span class="font-semibold">Phone:</span> {{ $student->phone }}</p>
         <p><span class="font-semibold">Email:</span> {{ $student->email }}</p>
@@ -46,8 +50,9 @@
         <p><span class="font-semibold">Note:</span> {{ $student->note }}</p>
     </div>
 
+    {{-- Action --}}
     <div class="mt-4">
-        <a href="/student/{{ $student->id }}"
+        <a href="{{ route('student.show',$student->id) }}"
            class="text-blue-600 font-semibold hover:underline">
            View Details →
         </a>
