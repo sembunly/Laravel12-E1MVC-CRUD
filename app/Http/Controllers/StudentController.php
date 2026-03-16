@@ -11,4 +11,8 @@ class StudentController extends Controller
     {
         return view('students.index', ['students' => Student::all()->sortByDesc('id')]);
     }
+
+    public function show(Student $student){
+        return view('students.show', ['student' => $student]);
+    }
 }
