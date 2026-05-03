@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Student;
 
 class StudentController extends Controller
@@ -32,7 +33,7 @@ class StudentController extends Controller
             'dob' => 'required|date|before:today',
             'pob' => 'required',
             'address' => 'required',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'photo' => 'sometimes|nullable|image|mimes:jpg,jpeg,png|max:2048',
             'note' => 'nullable'
         ]);
 
@@ -56,12 +57,12 @@ class StudentController extends Controller
         $validated = $request->validate([
             'name'    => ['required', 'string', 'max:255'],
             'gender'  => ['required', 'string', 'max:20'],
-            'phone' => 'required|unique:students,phone',
-            'email' => 'required|email|unique:students,email',
+            'phone' => ['required', Rule::unique('students', 'phone')->ignore($student->id)],
+            'email' => ['required', 'email', Rule::unique('students', 'email')->ignore($student->id)],
             'dob' => 'required|date|before:today',
             'pob'     => ['required', 'string', 'max:255'],
             'address' => ['required', 'string'],
-            'photo'   => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'photo'   => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'note'    => ['nullable', 'string'],
         ]);
 
@@ -75,7 +76,8 @@ class StudentController extends Controller
 
         $student->update($validated);
 
-        return redirect('/student/' . $student->id);
+        return redirect()->route('student.show', $student)
+            ->with('success', 'Student updated successfully.');
     }
 
     public function destroy(Student $student)
