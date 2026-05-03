@@ -82,7 +82,14 @@ php artisan migrate
 
 ---
 
-### 6. Run the Application
+## 6. Create Storage Symlink
+
+Run the following command to link the storage directory:
+
+```bash
+php artisan storage:link
+
+## 7. Run the Application
 
 Start the Laravel development server.
 
